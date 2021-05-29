@@ -1,0 +1,398 @@
+\documentclass[11pt]{article}
+
+\usepackage{fontspec}
+\usepackage[style=british]{csquotes}
+\usepackage[latin, french, american]{babel}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+%\usepackage
+
+\usepackage[]{csquotes}
+	\renewcommand{\mkcitation}[1]{\nobreakspace{}#1}
+\usepackage{amsthm}
+\usepackage[hang, flushmargin]{footmisc}
+\usepackage{etoolbox}
+	\ifundef{\abstract}{}{\patchcmd{\abstract}%
+		{\quotation}{\quotation\noindent\ignorespaces}{}{}}
+\usepackage[color=pink, textsize=small, disable]{todonotes}
+\usepackage[inline, shortlabels]{enumitem}
+
+
+% Bibliography
+	\usepackage[backend=biber, style=apa, autocite=inline, sorting=nyt, sortcites=true, maxcitenames=2, maxnames=100, natbib=true]{biblatex}
+	
+	%\DefineBibliographyExtras{american}{\let\finalandcomma=,}
+
+	\SetCiteCommand{\autocite}
+	
+	% Get rid of p. and pp.
+		\DeclareFieldFormat{postnote}{#1}
+		\DeclareFieldFormat{multipostnote}{#1}
+		\DeclareFieldFormat{volcitepages}{#1}
+		\DeclareFieldFormat{pages}{#1}
+	% ---
+	
+	% Volcite fixes
+		\DeclareFieldFormat{volcitevolume}{% Volume number in Roman numerals
+			\addspace\textsc{\Rn{#1}}}
+			
+		\renewcommand*{\volcitedelim}{\addcolon\space}
+		\renewcommand*{\nameyeardelim}{\addspace}
+	% ---
+	
+	\renewcommand{\postnotedelim}{%
+		\iffieldpages{postnote}%
+		 {\addcolon\space}%
+		 {\addspace}}
+	
+	\addbibresource{metaphysical-standpoints.bib}
+	
+	% Use origyear
+		\renewbibmacro*{date+extrayear}{%
+		\iffieldundef{\thefield{datelabelsource}year}
+		{}
+		{\printtext[parens]{%
+		   \iffieldundef{origyear}% this is new ...
+		     {}
+		     {\printtext[brackets]{\printorigdate}
+		      \setunit{\addspace}}% ... till here
+		   \iffieldsequal{year}{\thefield{datelabelsource}year}
+		     {\printdateextralabel}%
+		     {\printfield{labelyear}%
+		      \printfield{extrayear}}}}}%
+		\renewbibmacro*{date}{}%
+		\renewbibmacro*{issue+date}{%
+		\iffieldundef{issue}
+		{}
+		{\printtext[parens]{\printfield{issue}}}%
+		\newunit}
+		
+		\renewbibmacro*{cite:labelyear+extrayear}{%
+		\iffieldundef{labelyear}
+		{}
+		{\printtext[bibhyperref]{%moved this
+		  \iffieldundef{origyear}% this is new
+		    {}
+		    {\printtext[brackets]{\printorigdate}
+		     \setunit{\addspace}}% everything beyond this point is old
+		  \printfield{labelyear}%
+		  \printfield{extrayear}}}}
+	% ---
+
+% Style
+	
+	\setmainfont{Hoefler Text}
+	\frenchspacing
+	
+	\linespread{1.6}
+	%\setlength{\parskip}{1.5em plus 2pt minus 2pt}
+	
+	% Inline list
+	\setlist{itemjoin={,\enspace}, itemjoin* = { and\enspace}}
+	
+	% Ellipsis
+	\renewcommand{\mktextelp}{[.\,.\,.]\unkern}    \renewcommand{\mktextelpins}[1]{[.\,.\,.]\unkern␣[#1]}    \renewcommand{\mktextinselp}[1]{[#1]␣[.\,.\,.]\unkern}
+	
+	% Autoref (with babel)
+	\def\Snospace~{\S{}}
+	
+	\addto\extrasbritish {
+		\def\sectionautorefname{\Snospace}
+		\def\subsectionautorefname{\Snospace}
+		\def\pageautorefname{p.}
+	}
+	
+	\addto\extrasenglish {
+		\def\sectionautorefname{\Snospace}
+		\def\subsectionautorefname{\Snospace}
+		\def\pageautorefname{p.}
+	}
+
+% Headers
+	\pagestyle{fancy}
+	\renewcommand{\headrulewidth}{0pt}
+	\rhead{}
+	\lhead{}
+
+% Text expansion
+	\newcommand{\D}{Descartes}
+	\newcommand{\Ds}{Descartes's}
+	\newcommand{\dash}{\unskip{---}}
+
+% Metadata
+	\title{Metaphysical standpoints in Spinoza's system}
+	\author{Barnaby R. Hutchins \\ \small\href{mailto:bhutchins@gmail.com}{bhutchins@gmail.com}}
+	
+	\date{}
+	
+% Use shorthands
+	\newbibmacro*{longcite}{%
+		\ifthenelse{\ifnameundef{labelname}\OR\iffieldundef{labelyear}}
+		  {\usebibmacro{cite:label}%
+		   \setunit{\addspace}}
+		  {\printnames{labelname}%
+		   \setunit{\nameyeardelim}}%
+		\usebibmacro{cite:labelyear+extrayear}}
+  
+	\renewbibmacro*{cite}{%
+		\iffieldundef{shorthand}
+			{\usebibmacro{longcite}}
+			{\usebibmacro{cite:shorthand}}}
+	
+	\defbibcheck{shorthands}{%
+		\iffieldundef{shorthand}{}{\skipentry}}
+
+% Foreign languages
+\newcommand\foreign[2]{\foreignlanguage{#1}{\emph{#2}}}
+	
+% Misc macros
+	\newcommand\texttitle[1]{\emph{#1}}
+	\newcommand\simplecite[1]{(#1)}
+	\newcommand\simpletextcite[1]{#1}
+
+\begin{document}
+
+	\emergencystretch 3em
+	
+	\maketitle
+
+	%\nocite{C}
+	\nocite{CM}
+	
+	%\todo{Does this fall back into the subjective interpretation?}
+	%\todo{What does \enquote{real} mean on my interpretation? Make point about ineliminability clearer.}
+	
+	\begin{abstract}
+		In Spinoza’s system, the attributes, or the essence, of the one substance seem to imply a fundamental contradiction: the essence of substance is simultaneously both really non-diverse and really diverse. The history of the scholarship on the attributes is, broadly speaking, a history of alternating assertions of the reality of non-diversity at the expense of diversity and vice versa; the two properties do not readily co-exist. Here, I propose a different interpretation \dash that Spinoza's system has, and requires, two metaphysics: in one, the essence of substance is non-diverse; in the other, it is diverse. As such, I argue, Spinoza gets to be a metaphysical monist on condition of being a \emph{meta}metaphysical pluralist. 
+	\end{abstract}
+	
+	\section{Introduction} \label{sec:Intro}
+	
+	This paper is about a fundamental contradiction in Spinoza’s system, and about a proposed dissolution of it. The contradiction is this: on Spinoza’s account, the world is simultaneously both simple\footnote{On Spinoza and the commitment to simplicity, see, e.g., \cite[85--86]{schmidtFormalDistinction}.} and diverse \dash that is, on the one hand, there is only one, indivisible substance, but, on the other, there are multiple things nevertheless. The proposed dissolution is this: Spinoza has two coexisting metaphysics, one with a simple ontology and one with a diverse ontology. And he does not just happen to have these two metaphysics: he needs both, and neither can be reduced to the other. The interpretative point here is to set out a way in which Spinoza's system can be radically monistic and still allow for diversity.
+	
+	Not incidentally, this paper is also a defence of what we might call \enquote{metametaphysical pluralism} \dash i.e., minimally, the position that more than one metaphysics can hold.
+	
+	There are several ways to address the tension between simplicity and plurality in Spinoza’s philosophy. Here, I am focusing on what is arguably the most fundamental: the attributes. This is Spinoza’s definition: \textquote[{\simplecite{E1D4}}]{By attribute I understand what the intellect perceives of a sub­stance, as constituting its essence}.\footnote{Quotations from the \texttitle{Ethics} are all taken from \citelabel{C1}.} So, if some substance is, for instance, extended, we take its essence to consist in extension, and we can say that it has the attribute of extension. In itself, this seems straightforward enough. The trouble comes when we try to determine the actual metaphysical status of the attributes. \todo{This is awkwardly phrased} This is so apparently intractable a problem as to lead at least one commentator to conclude, \textcquote[185]{Martineau1895}{\textins{h}ow \textins{the essence of substance} can be one and self-identical, while its constituents are many, heterogeneous and unrelated, is a question which is hopeless of solution}.
+	
+	The problem is reflected in an old debate, between the so-called subjective and objective interpretations of the attributes. My intention here is not to revive that debate \dash but it is usefully symptomatic of both the underlying issue in Spinoza’s metaphysics and of the apparent interpretative need to resolve it in one unitary way or another. In other words, that there has been such a long, entrenched, and occasionally bitter opposition between these two strands of interpretation suggests that Spinoza’s philosophy contains ample resources to support both. It also suggests that there is probably something wrong with at least some basic, long-held assumption about Spinoza \dash and possibly even about metaphysics in general. I am going to argue here that the problem ultimately lies in the assumption of metametaphysical monism \dash i.e., the position that multiple metaphysical systems cannot hold.
+	
+	The history of these divergent interpretations is one of alternate ebb and flow, with one becoming more mainstream while the other goes somewhat out of fashion, and vice versa. Thus, in 1934, Wolfson could write, \textcquote[146]{Wolfson1934}{\textins*{o}n the whole, the abundance of both literary and material evidence is in favor of the subjective interpretation}, while, a few decades later, Delahunty would claim that \textcquote[116]{Delahunty1985}{there is at least one matter on which agreement seems finally to have been reached} \dash this professed consensus is, naturally, that the subjective interpretation is wholly wrong. Now, the history of philosophy is of course filled with shifting fashions, but the purported definitiveness of both these positions is, at the least, instructive: apparently, there is enough in Spinoza’s philosophy to support some sort of consensus on one metaphysical position as well as on its exact opposite.
+	
+	The subjective interpretation goes back to Hegel, who, in his \texttitle{Lectures on the History of Philosophy}, characterises Spinoza’s philosophy as a \textcquote[155]{Hegel1990}{renunciation of every­thing determinate and particular}, privileging simplicity over diversity \dash on Hegel’s reading of Spinoza, \textcquote[153]{Hegel1990}{only absolute substance truly is, it alone is actual}. Accordingly, he leans on the apparently epistemological aspects of E1D4 \dash that the attributes are \textquote{what the intellect \emph{perceives} of a substance, \emph{as}\dots}, etc. \dash and takes the attributes to be \textquote{just nothing in themselves}, but merely \textquote{forms} that the \textquote{understanding} \textquote{applies} to the substance \autocite[159]{Hegel1990}. That is, he makes the attributes fully mind-dependent: we understand the substance in terms of attributes, but the attributes do not actually exist in the substance itself; their existence is purely subjective.
+	
+	The subjective interpretation has the benefit of preserving Spinoza’s apparent commitment to a radical kind of monism; in effect, it makes diversity nothing more than an illusion.\footnote{However, even then, some kind of distinction between the substance and a mind seems to be necessary for the latter to have the illusion in the first place \dash i.e., diversity is a precondition for this argument against diversity.} But it runs into other problems. For one thing, Spinoza explicitly asserts that the attributes are identical to the substance \simplecite{E1P4d} \dash and if the attributes are dependent on a finite mind, then, by transitivity, the \foreign{latin}{causa sui} must itself be dependent on a finite mind. That would be more than a little odd. For another, Spinoza also claims that we have adequate knowledge of the essence of the substance \simplecite{E2P44s}; but, if all we know of the substance are our own projections onto it (the forms we apply to it), it seems we can never have any knowledge of the substance itself.
+	
+	These issues lead to the objective interpretation: the attributes are not merely subjective, mind-dependent projections, but are real and objective, existing independently of finite minds. On the objective interpretation, the attributes are ontological features of the substance itself. And if the attributes themselves are ontologically real, then so is the distinction between them. In which case, there is real ontological diversity in Spinoza’s metaphysics. So, broadly speaking, while the subjective interpretation preserves absolute monism at the expense of diversity, the objective interpretation preserves diversity at the expense of absolute monism. This brings its own problems, on both the global scale (it seemingly undermines a central tenet of Spinoza’s philosophy) and the local. For instance, if the attributes are identical to the substance, then the attribute of extension is identical to the substance, and so is the attribute of thought; by transitivity (again), extension must therefore be identical to thought \dash but, for Spinoza, the attributes are really distinct (E1P10s). Besides which, extension and thought are, by definition, non-identical.
+	
+	For the most part, the recent literature has tried to move beyond the subjective/objective dichotomy. In \autoref{sec:Reject}, I look at three significant instances of this (two interpretations in terms of a rational distinction between attributes (\cite{Shein2009} and \cite{Melamed2017}) and one in terms of a formal distinction (\cite{DeleuzeExpressionism} and \cite{schmidtFormalDistinction})). All attempt to preserve both monism and diversity. And all rely on looking for some way in which the diversity of the attributes can hold without being a real, ontological distinction. This results in appealing to the attributes as different \enquote{ways} of grasping the nature of the substance, or as different \enquote{aspects} or \enquote{quiddities} of that substance. This is all compelling as far as it goes, I argue, but \enquote{ways}, \enquote{aspects}, and \enquote{quiddities} are in need of metaphysical specification. Otherwise, either they risk simply being nebulous, or we end up treating them as epistemological or ontological categories, and thereby collapse back into, respectively, the subjective or objective interpretations.
+	
+	The terms \enquote{ways} and, somewhat less frequently, \enquote{aspects} have a long history in the literature on Spinoza.\footnote{E.g., \textcites{Haserot1953,DeleuzeExpressionism,Jonas1986,Deveaux2003,Shein2009,Melamed2017}. References to \enquote{quiddities} in this context are rarer, but see, e.g., \textcites{DeleuzeExpressionism,schmidtFormalDistinction,Husted1987}.} They are similarly present in Spinoza’s work itself. Wherever they appear, though, they are consistently underspecified. What I attempt to do in  \autoref{sec:StandpointInt} \dash and, ultimately, in the paper as whole \dash is to tease out the metaphysical implications of such ways and aspects. How can we give them content without falling back into the objective interpretation, and thereby effacing Spinoza’s monism?
+	
+	The suggestion is that Spinoza has multiple metaphysics, that these metaphysics are indexed to standpoints, and that there are two such standpoints in the \texttitle{Ethics}, the standpoint of the substance\footnote{Of course, substance in itself, qua everything, cannot have a standpoint as such \dash that would amount to a view from nowhere. My point here is that the functional role it plays in Spinoza's system is nevertheless that of a standpoint. On what this involves, see \autoref{subsec:AdequateKnowledgeAndObjectivity}. See also [anonymised], in which we argue that treating the infinite intellect as if it were a standpoint is a condition of possibility for Spinoza's explication of the human mind.}, and the human standpoint \dash and that, consequently, there are two separate metaphysics in the \texttitle{Ethics}, one indexed to each. The metaphysics indexed to the substance is an absolute monism that suffers no diversity: under that metaphysics, there is no distinction between the attributes (just as there is no distinction between anything). Under the metaphysics indexed to the human standpoint, however, the attributes are both real and really distinct. Neither metaphysics is false; both ontologies are real. They merely have different indices. This is what I am calling \enquote{the standpoint interpretation} of Spinoza's attributes. More generally, it's an instance of what we might call \enquote{indexical realism}.\footnote{I.e., the position that reality is, or can be, indexed to something-or-other, and its correlate, that reality is not co-extensive with independent existence.}
+	
+	\section{Rejecting the subjective/objective dichotomy} \label{sec:Reject}
+	
+	\subsection{Real and rational distinctions} \label{subsec:RRDist}
+	
+	\subsubsection{Ways} \label{subsubsec:Ways}
+	
+	\cite{Shein2009} is explicitly positioned as a critique of what she calls the \enquote{false dichotomy} between the subjective and objective interpretations. She provides a series of knockdown arguments against both interpretative strands, concluding that they end up in similarly unsatisfactory positions. She argues that the underlying premise that misleads both the subjective and objective interpretations is a misunderstanding of Spinoza’s notion of a real distinction, itself stemming from a misreading of the Cartesian real distinction.
+	
+	When Descartes appeals to there being a \enquote{real distinction} between two things, he means both, epistemologically, that the two things cannot be conceived through one another and, ontologically, that they are (thus) separate substances. But, for Spinoza, there are no separate substances, and so, when he refers to a real distinction between the attributes in E1P10s, he cannot be invoking the ontological side of Descartes’s distinction. This is bolstered by Spinoza’s emphasis on epistemology in the phrasing of E1P10s: \textquote{two attributes may be conceived to be really distinct (i.e., one may be conceived without the aid of the other)}.
+	
+	The relevant Cartesian distinction, Shein suggests, is not his real distinction between substances, with its intermixed epistemological and ontological connotations, but his distinction between a thing’s essence and its existence:\blockquote[{\avolcites(Descartes to ***, 1645 or 1646;)(\unskip{; my emphases}){}[280]{CSMK}{4}[349]{AT}}][.]{we do indeed understand the essence of a thing \emph{in one way} when we consider it in abstraction from whether it exists or not, and \emph{in a different way} when we consider it as existing; but \emph{the thing itself} cannot be outside our thought without its existence} Unlike that between substances, this distinction not only does not imply an ontological difference, but explicitly rules one out: we can conceive of the thing in different ways, in terms of its essence or existence, but, ontologically, the thing itself exists only along with its essence; ontologically, its existence and its essence are not separable. \textquote{The diversity emerges}, as Shein puts it, only \textquote[{\autocites()(\unskip{, second emphasis mine})[528]{Shein2009}}]{because we \emph{regard} the singular substance in different \emph{ways}}.
+	
+	Descartes calls this a \enquote{rational distinction}\footnote{\textquote[{\avolcite{4}[349]{AT}}]{\foreignlanguage{latin}{\textins*{D}istinctionem Rationis}}, which CSMK translate as \textcquote[280]{CSMK}{conceptual distinction}.}, and if this is indeed what is at stake for Spinoza, his real distinction between attributes comes down to this: \blockquote[{\autocites()(my emphases)[529]{Shein2009}}]{the multiplicity arises from the fact that we, finite minds, can \emph{conceive} the substance in \emph{different ways}. The finite intellect \emph{regards} the substance in\emph{ two fundamentally different ways}, either as Thought or as Extension}.
+	
+	On this understanding, the attributes are nothing but different \emph{ways} of looking at, conceiving, understanding, etc. the substance. The substance can be conceptually divided up in these ways, but it is not ontologically divided.
+	
+	This might look suspiciously like a version of the subjective interpretation at first glance: if the attributes are not distinguished outside of finite minds, then, presumably, their distinction is dependent on finite minds. The difference, on Shein's account, seems to be that, even while the attributes are being rationally distinguished, they remain ontologically homogeneous with the substance, such that, when we think of the substance, what we are thinking of is ultimately the same regardless of how we divide it up conceptually.
+	
+	Shein uses the sense/reference distinction to make this point: the attributes are different senses of a single referent (the substance itself). On this understanding, the attributes are supposedly not, as Hegel would have it, merely forms that we apply to the substance. As such, Shein suggests, our knowledge of the substance really is knowledge of the substance itself, and not of some separate, finite-mind-dependent invention. As she emphasises \parencite*[507]{Shein2009}, though, this is only an indication of a direction that an answer might take. It is not intended to be a complete solution, and, indeed, it needs further metaphysical specification (see \autoref{sec:StandpointInt}) if it is not to run into problems (detailed in \autoref{subsec:Problems}).
+	
+	%	\dash \textcquote[530]{Shein2009}{\textins*{w}ith respect to their referent, the Morning Star and the Evening Star are identical. However, they are not identical with respect to their sense. They each pick out, so to speak, the referent differently}
+%%
+	
+	\subsubsection{Aspects} \label{subsubsec:Aspects}
+	
+	Appeal to a kind of rational distinction is also the approach taken by \textcite{Melamed2017}. Shein and Melamed, however, take opposite tacks on the issue of whether the distinction is grounded in the essence of substance itself. \Textcite[529]{Shein2009} argues that it isn't; \Textcite[101]{Melamed2017} that it is.
+	
+	The concern here is with the reality of the attributes: if there is nothing in the substance itself that gives rise to them, they do seem to be in danger of slipping back into the realm of the illusory. But if there were some way for the rational distinction to be grounded in the substance without the distinction itself being an ontological one, that would assure that the attributes are indeed real, without undermining Spinoza’s monism. Melamed looks for resources for doing just this in the Scholastic distinction between \enquote{reasoned reason} (\foreign{latin}{rationis ratiocinatae}) and \enquote{reasoning reason} (\foreign{latin}{rationis ratiocinantis}). On Suárez’s definition, only the latter \textquote{is not found in reality, but has its origin in the mind}, while a distinction of reasoned reason \textquote{has a foundation in reality} and \textcquote[18]{Suarez1947}{arises not entirely from the sheer operation of the intellect, but from the occasion offered by the thing itself}. That is, a distinction of reasoned reason is somehow grounded in the thing itself.
+	
+	%\textquote{has no foundation in reality and arises exclusively from the reflection and activity of the intellect}
+	
+	Accordingly, Melamed claims that taking the distinction of reasoned reason to be the model for the real distinction in E1P10s, \blockcquote[102]{Melamed2017}[.]{could provide a good explanation for Spinoza’s understanding of substance and attributes. Substance, \emph{in reality}, has infinitely many \emph{aspects} that are each infinite and independent of each other. These are aspects of one and the same indivisible and infinite entity. God is substance consisting [\foreign{latin}{constantem}] of infinite aspects (E1d6), but these aspects are not parts of God} Melamed takes the \enquote{aspect} terminology from Suárez as well: for Suárez, distinctions of reasoned reason are rooted in the different aspects of a thing. As such, on this reading, the attributes pick out different aspects of the substance. The attributes are thus real \dash they are not illusions \dash and they are grounded in the substance, so they are not the projections of finite minds, or forms applied by finite minds. At the same time, the substance itself remains undivided, so Spinoza’s monism is preserved. This is where Melamed’s treatment ends.
+
+%%
+	
+	\subsubsection{Quiddities} \label{subsubsec:Quiddities}
+	
+	The rational distinction is not the only option for a reconceptualisation of Spinoza's real distinction. The scholarship has also treated it as a disguised intermediate distinction\footnote{An intermediate distinction is one that is grounded in reality but that, unlike a real distinction, does not involve ontological separability. There are parallels with the distinction of reasoned reason here, but, e.g., Suárez is clear that his is truly a species of rational distinction, and he rejects intermediate distinctions as such.}, notably as a Scotian formal distinction.\footnote{\textcite{WallerSpinozaIntermediate} takes the relevant intermediate distinction to be Henry of Ghent's intentional distinction. The analysis of the formal distinction in this paper applies similarly to the intentional distinction.} For Scotus, there is a formal distinction between $x$ and $y$ iff they differ entirely in quiddity but are not really distinct. So, will and intellect are supposed to be formally distinct, because the notion of will is not included in the definition of intellect and vice versa, but neither is ontologically separable from the other insofar as neither is ontologically separable from soul.
+	
+	Deleuze directly equates Spinoza's real distinction with Scotus's formal distinction \citeyearpar[37--39]{DeleuzeExpressionism} and claims that,
+		\blockcquote[65--66]{DeleuzeExpressionism}[.]{
+			attributes are distinguished \enquote{quidditatively,} formally \textelp{}. Each atttributes its essence to a substance, as to \emph{something else}. \textelp{} So there are no substances of the \emph{same} species as the attributes, no substance which is \emph{the same thing} (\foreign{latin}{res}) as each attribute (\foreign{latin}{formalitas}). \textelp{} This \enquote{other thing} is thus the \emph{same for} all attributes. It is furthermore the \emph{same as} all attributes. And the latter determination in no way contradicts the former one. \textelp{} All formal essences form the essence of an absolutely single substance}
+	That is, there is a difference in quiddity between the attributes \dash the notion of extension is not involved in the definition of thought and vice versa \dash but neither is really distinct from the other insofar as neither is really distinct from the substance. \label{DeleuzeOnOrders}On this basis, Deleuze thinks that there is no contradiction between the diversity of the attributes and the simplicity of the substance: \textcquote[64, my emphasis]{DeleuzeExpressionism}{\textins*{t}here are here as it were \emph{two orders}, that of formal reason and that of being, with the plurality in one perfectly according with the simplicity of the other}. Deleuze relies here on a separation of orders so as to overcome the contradiction between diversity and simplicity: in one there is a diversity of quiddities; in the other, there is only simplicity, or non-diversity.
+	
+	Deleuze's discussion is admittedly somewhat opaque here. \Citeauthor{schmidtFormalDistinction}'s version is clearer, in part because it makes explicit the role of infinity in Scotus's application of the formal distinction to the attributes of God, and its relevance to Spinoza's substance. Scotus provides an argument against the divisibility of infinity as a proof of God's simplicity, and, 
+		\blockcquote[91--92]{schmidtFormalDistinction}[.]{
+			\textins*{i}f God is simple, there is no real multiplicity in him. Accordingly, the infinite divine attributes cannot be parts that constitute God. So if we transpose a property, for example wisdom, into the mode of infinity -- that is, if we conceive it as appertaining to an infinite being -- then no second property in God would fail to be really identical to the first. Thus the divine attributes are really identical by virtue of God’s infinity. But Duns Scotus emphasises that nevertheless they remain at the same time formally distinct}
+	Scotus's problem here is structurally very similar to Spinoza's: reason necessitates that God must be simple, but God's attributes nevertheless differ. His solution is to assert that the distinction between attributes cannot be real (else God would not be simple), so they must differ in some other way. As applied to Spinoza, 
+		\blockcquote[93]{schmidtFormalDistinction}[.]{
+	we can indeed examine the attributes themselves as thoroughly as we like; nothing in them will reveal their identity. But if we know that they are attributes of God and that God is simple, we can conclude that the attributes are really identical -- God is extension, God is thinking, etc.\ -- without abolishing thereby their formal distinction}
+	On \citeauthor{schmidtFormalDistinction}'s account, then, God, or the substance, must be simple, so the attributes must be really identical, so their distinction must be formal. \Citeauthor{schmidtFormalDistinction} concludes with this necessitation, and with the adoption of the terminology of the formal distinction: the attributes must be distinct, but cannot be really distinct, and so must be formally distinct.
+	
+%%
+	
+	\subsubsection{Ways, aspects, and quiddities} \label{subsubsec:DistinctionsConclusion}
+	
+	These three interpreations take broadly similar approaches, all reconceptualising Spinoza's real distinction as another kind of distinction, be it rational or intermediate. They also seem to agree, at least on a functional level, about what happens when we conceive of the substance through its attributes. One sees it in terms of finite minds regarding substance \emph{in} different \emph{ways}; another sees it in terms of regarding different \emph{aspects} \emph{of} the substance; and another takes us to be picking out formally distinct \emph{quiddities} in the substance. Ways, aspects, and quiddities are central here: we do not \enquote{project} forms onto the substance, but see it in different \emph{ways}; the substance is not ontologically separated into different attributes, but involves different \emph{aspects} or \emph{quiddities}.
+	
+	The difference in terminology also reflects a deviation in emphases. The \emph{ways} interpretation emphasises the epistemology, in that the attributes are ways of conceptually dividing up the substance, without that division's being ontologically grounded. The \emph{aspects} and \emph{quiddities} interpretations emphasise the ontology, in that what we are picking out is really grounded in the substance. But all interpretations are concerned to allow the substance to remain unitary and homogeneous: it’s just that we see it in different ways \dash or we see it in its different aspects or quiddities. This is helpful and promising, as far as it goes. In the next section, I look at what's missing from this, and at what still needs to be done.
+	
+	\subsection{Problems} \label{subsec:Problems}
+	
+	The main issue is the underspecification of those key terms, \enquote{ways}, \enquote{aspects}, and \enquote{quiddities}. Both Shein’s and Melamed’s accounts are self-admittedly somewhat provisional when it comes to the specifics. Melamed suggests that reasoned reason \textcquote[102, my emphasis]{Melamed2017}{\emph{could} provide a good explanation}; Shein \textcquote[507]{Shein2009}{point\textins*{s} towards the direction in which \textins{she} believe\textins*{s} a solid interpretation of the theory of attributes should go} and \textcquote[529, my emphasis]{Shein2009}{would like to \emph{suggest}, \emph{without fully arguing for this}, that \textelp{} the multiplicity arises from the fact that we, finite minds, can conceive the substance in different ways}. Both are mainly interested in showing where the existing interpretative tendencies went wrong, and neither is attempting to provide a fully fleshed-out alternative. \Citeauthor{schmidtFormalDistinction} does not present his quiddity account as provisional, but does stop short of putting meat on the bones of the distinction.
+	
+	The trouble with this is that, in the absence of fleshing-out, these alternatives are rather diaphanous, and they are at risk of getting swept away by the prevailing interpretations. Shein is careful to explicitly distance her own position from the subjective interpretation, but, at least on the face of things, \todo{Be nicer here}the separation is precarious. Her use of the sense/reference distinction is what is intended to shield this account from the problems that beleaguer the subjective interpretation: the attributes differ in sense, but their identical reference ensures that our knowledge of the substance actually is knowledge \emph{of} the substance. Our knowledge of the essence of substance, however, is always in terms of the attributes (E1D4; E1P10s). If, as Shein claims, the distinction between the attributes is not grounded in the substance itself \dash if our ways of regarding it are not rooted in it \dash then our actual knowledge is still of something that depends on us rather than on the substance.
+	
+	In this case, the \enquote{reference} in Shein's Frege analogy becomes something trans-attributional: the \enquote{true} nature of the substance consists in something beyond the attributes that ties them back to it. This seems to return us to a position that Shein herself rightly criticises \dash a position in which \textcquote[523]{Shein2009}{\textins*{k}nowledge through the attributes is rendered \enquote{illusory} because there is a level in the system which remains inaccessible}. Furthermore, in the Fregean case, we can look to reference to determine that the Morning Star is indeed the Evening Star \dash but if the equivalent of reference in the Spinozist case is trans-attributional, then we have no way to establish that the attributes really are one and the same thing in the substance. In this way, monism becomes something that is impossible for Spinoza to establish, the unity of substance falls apart, and his system cannot get off the ground. If the attributes are not real, Spinoza’s entire system becomes in-principle impossible to establish.
+	
+	Consequently, whatever attributes are, they must be real, and their reality will need to be grounded, somehow. Melamed does assert their reality. But, by reifying them without specifying the nature of their reality, his position is liable to fall back into the objective interpretation. On a superficial level at least, when he claims that \textcquote[102]{Melamed2017}{\textins*{s}ubstance, in reality, has infinitely many aspects that are each infinite and independent of each other}, it is not obvious how this is different from claiming that substance has infinitely many \emph{attributes} that are each infinite and independent of each other \dash without further specification, this looks like a restatement of the problem in different terms, rather than a solution. In itself, glossing \enquote{attributes} as \enquote{aspects} is not going to be sufficient.
+		
+	Similarly, as \citeauthor{schmidtFormalDistinction} notes, \textcquote[92]{schmidtFormalDistinction}{\textins*{t}he crucial question is, How is it \emph{possible} that the attributes are really identical and formally distinct?}. To say that they are distinct in some intermediate way between real and non-real (\textcquote[64]{DeleuzeExpressionism}{minimally real}, as Deleuze puts it) is not, in itself, to say very much. \Citeauthor{schmidtFormalDistinction}'s suggestion as to how this works is that Scotus (and, by implication, Spinoza) must reject the Principle of the Indiscernibility of Identicals, \textcquote[92]{schmidtFormalDistinction}{so that it is possible that, although $x$ and $y$ are identical, $x$ has different properties from $y$}. This is a reasonable conclusion to draw in the context: if the attributes are really identical and nevertheless distinct, there must be some way in which real identicals can be distinguished. But without metaphysical specification of what that consists in, this, like the aspects interpretation, amounts to a restatement of the same problem in different terms. The restatement is clarificatory, but, in the absence of further specification, it remains a restatement.
+	
+	It seems as though, if we assume that ways, aspects, and quiddities have their face-value ontological statuses, they end up being only nominally different from, respectively, subjective illusions and objectively-real attributes. Or, the terms could just be vacuous: they could imply novelty but turn out to be contentless. This is not a generous alternative. In order to avoid collapsing into prior problematic interpretations, on the one hand, or vacuity, on the other, these terms are going to need some content. In the following section, I set out some metaphysical implications of treating attributes as ways, aspects, or quiddities.
+	
+	\section{The standpoint interpretation} \label{sec:StandpointInt}
+	
+	\subsection{Metametaphysical pluralism} \label{subsec:MMP}
+	
+	The issue, then, is this. What, exactly, are ways of regarding the substance if not projections onto it? Or, what are aspects or quiddities of the substance if not ontologically-real attributes? We have already established that they do have to be real; otherwise, we end up adding a trans-attributional barrier between the substance and the attributes, and everything falls apart. The problem \emph{then}, however, is what their reality could possibly consist in. In Spinoza’s ontology, the reality of everything is grounded in that of the substance, just because there is simply no reality beyond it (E1P15). But allowing a real distinction between the attributes in the Cartesian sense \dash allowing them to be ontologically distinct \dash carves the substance up and returns us to the objective interpretation and all its problems. This seems to bring us to something of an impasse: the reality of the attributes has to be grounded in something, and the substance metaphysics appears to be the only suitable candidate \dash but grounding it purely in the substance metaphysics immediately breaks the system. Spinoza’s system requires the attributes to be real, but it seems to allow no recourse for their reality.
+	
+	Our current position is as follows. We know that we perceive the essence of a substance only in terms of its attributes (E1D4), and that the attributes are identical to the essence of substance (E1P4). We know that, in order for Spinoza to build his system, the attributes have to be real (since the unity of substance becomes in-principle impossible to establish if they are not). We also know that the substance is unitary (or at least indivisible) (E1P12; E1P13\footnote{See also CM 1.3 and 1.5.}) and that the attributes are plural (E1P11).
+	
+	If we do assume that the reality of something can indeed only be grounded in the substance metaphysics, then we find ourselves right back at the original problem \dash and we seem to be stuck. The simplicity of the substance and the multiplicity of the attributes, in combination with the identity of the two, renders the reality of the attributes impossible. Nevertheless, the attributes have to be real in order for the system to be established.
+	
+	I mentioned in the introduction that I take the intractability of the subjective/objective dichotomy to be indicative of something wrong in some underlying premise. The three interpretations discussed above took the problem to lie in how we understand the kind of distinction that Spinoza takes there to be between the attributes \dash but, in itself, that turned out not to dissolve the dichotomy. And now we find ourselves stuck here, with two propositions (the substance is unitary/the attributes are plural) that must both hold, and one premise (all reality is grounded purely in the substance metaphysics) that makes them contradictory. It looks as though our options are either (a) to give up one or the other of the propositions (and thereby the system as a whole) or (b) to give up the premise.
+	
+	What would (b) entail? Admittedly, at first, this might well sound like jumping from the frying pan into the fire \dash or maybe cutting off your nose to spite your face. Grounding all reality in the metaphysics of the one substance is the underlying principle of Spinoza’s entire ontology and epistemology; it is the basis of his rationalism. So it is more than a little ironic that it seems to be necessary to give it up in order for his system to work. If we are to take giving up this premise seriously, it will have to be in a qualified form: it cannot be the case that we just allow other substances to spring up as needed \dash Spinoza’s metaphysics expressly rules that out (\textquote{\textins*{e}xcept God, no substance can be or be conceived} (E1P14)).
+	
+	So, we have to ascribe reality to the attributes, but the metaphysics of Spinoza’s substance does not have the resources to accommodate their reality. I am going to suggest that the only option at this point is for there to be another metaphysics at work \dash a metaphysics that is a necessary condition for Spinoza to develop his metaphysics of substance. It is a necessary condition just because, without a metaphysics that allows reality to the attributes, the metaphysics of substance cannot be formulated (because of the problem of the trans-attributional barrier). Moreover, this second metaphysics would not be eliminable, just because Spinoza’s monism continues to require the reality of the attributes \dash that is, it cannot be collapsed into the monist metaphysics once established. On top of this, if we are dealing with separate metaphysics, then the essence of substance can be both really diverse (i.e., in terms of attributes) and really non-diverse (i.e., in terms of unitary substance) without contradiction; the ontologies do not occupy the same metaphysical space, so to speak.
+	
+	\subsection{The metaphysics of the human standpoint} \label{subsec:MHS}
+	
+	%All of this implies, then, that the metaphysics of substance that Spinoza presents explicitly in the \texttitle{Ethics} is conditioned on another, more implicit metaphysics. Which brings us to the issue of what exactly this implicit metaphysics involves. It has to affirm the reality of the attributes, of course; that is a given.
+	
+	At the beginning of Part Two of the \texttitle{Ethics}, Spinoza makes an interesting move. So far, the \texttitle{Ethics} has been built up (at least purportedly) on the basis of deduction from rational principles. But in the axioms to Part Two, Spinoza introduces three apparently empirical premises.\footnote{See \textcites[189--190]{Bartuschat1994}[211--212]{Renz2017}[18, 144]{RenzExplainability}.} \todo{Maybe not here, but: Spinoza has (1) a pre-existing commitment to determinism. He doesn't have an a priori argument for diversity, but given (1) and that (2) diversity is empirically known to exist, it must exist necessarily. Maybe see Melamed's \texttitle{Why Spinoza is not an Eleatic monist}?}\ E2A2 states, simply, \enquote{[m]an thinks}, or, along with the gloss from NS\footnote{I.e., the contemporary Dutch translation of Spinoza's works, with which Spinoza himself was at least familiar; Curley includes the gloss in his English translation.}, \textquote{\textins*{m}an thinks, or, to put it differently, we know that we think.} E2A4 rounds this out with, \textquote{[w]e feel that a certain body is affected in many ways.} And E2A5 adds, \textquote{[w]e neither feel nor perceive any singular things except bodies and modes of thinking.} The first two of these axioms derive two basic givens from experience: thought and bodies, respectively. The third (among other things) places a limit on these givens, again apparently from experience: there are no more than two of them.
+	
+	The givens of E2A2 and E2A4 exactly match the two attributes \dash thought and extension \dash in terms of which we perceive the essence of substance. Now, as established above, the metaphysics of substance cannot ground the attributes, but it still requires them. Here, they are provided axiomatically regardless. I want to suggest that this is no coincidence. Spinoza cannot derive the attributes of thought and extension from his substance metaphysics, but he also cannot do without them, so he introduces them a posteriori. That is, they exist irrespective of their compatibility with the metaphysics of substance.\footnote{\Textcite[73]{RenzExplainability} argues that, although thought and extension (her concern here is with the human mind, but insofar as it is constituted by thought and extension) are not epistemically derivable from substance, they must follow from it ontologically. Despite my claim to metaphysical incompatibility here, I don't disagree: this paper is an argument for how divergent thought and extension can be compatible with monistic substance. See \autoref{subsec:AdequateKnowledgeAndObjectivity}.} In other words, this is a separate metaphysics that grounds the attributes independently of the metaphysics of substance.
+	
+	Given the way in which the axioms are presented (A4 and A5 especially), what grounds thought and extension in this metaphysics is human experience \dash or, at least, experience that involves thoughts and bodies and nothing more.\footnote{Strictly speaking, this need not be exclusively human, but I am going to label it as such for the sake of convenience.} The implicit metaphysics, then, is one that is indexed to a particular standpoint \dash a human standpoint. From this standpoint, the world consists of two \emph{aspects}: a thought-aspect and a bodily-aspect; it has two quiddities:  a thought-quiddity and a bodily-quiddity. Put otherwise, from this standpoint, the world is seen in two different \emph{ways}: in terms of thought, and in terms of extension.\footnote{This is somewhat reminiscent of \citeauthor{StrawsonIndividuals}'s descriptive metaphysics \autocite{StrawsonIndividuals}. One significant difference is that the metaphysics indexed to the human standpoint is not (only) an elaboration of the categories of our experience, but is a condition of the establishment and maintenance of Spinoza's wider system.}
+	
+	It is through this implicit metaphysics indexed to the human standpoint, and not through the substance metaphysics, that \enquote{ways}, \enquote{aspects}, \enquote{quiddities} \dash and, for that matter, \enquote{attributes} \dash get their content.\footnote{We might well also read Deleuze's two orders (see \autopageref{DeleuzeOnOrders}) in the same way, with the order of formal reason getting its metaphysical specification in the metaphysics indexed to the human standpoint, and the order of being in that indexed to substance.} In this sense, the human standpoint functions as a partial ground for the metaphysics of attribute diversity \dash partial, because the metaphysics of substance evidently has something to do with the metaphysical explanation of the attributes; it is just not, as we have seen, sufficient for their full explanation. We don't get to a full explanation until we add in the human standpoint.
+	
+	It might be objected that some spurious human standpoint metaphysics is not sufficient to ground the reality of the attributes \dash that reality can ultimately only be grounded in the substance metaphysics for Spinoza. But then, as already established, the substance metaphysics simply cannot in principle ground the reality of the attributes, but it does still require them to be real. To use their partial non-grounding in the substance metaphysics to deny their reality would thus be to beg the question. Spinoza does need a separate metaphysics to do the job of grounding their reality \dash and axioms 2, 4, and 5 indicate one that is readymade; moreover, since it is introduced through axioms, it is unavoidable and ineliminable. The metaphysics of the human standpoint is already implicit within the \texttitle{Ethics}, and it fulfils a necessary function for Spinoza’s system.
+	
+	What all this means is that Spinoza has two coexisting metaphysical systems. From the human standpoint, the world really does consist of thought and extension (and the multiplicity of singular thoughts and bodies grounded in them). The two attributes are both real and really distinct.\todo{Insert number of attributes footnote here}\ This system is necessary and ineliminable both because it is a condition for the other system and because it is (implicitly) axiomatic. At the same time, there is Spinoza's familiar Eleatic monist metaphysical system (i.e., the metaphysics indexed to the substance). Released from the need to accommodate the reality of diversity, this system describes an absolutely simple substance. It is necessary and ineliminable because of its rational warrant. Since neither system can be eliminated, and neither can be collapsed into the other, they must, in a sense, be co-constituting\footnote{\textcite[76]{Schliesser2011} makes a related point about co-constitution, although in relation to imagination, intellection, and modes.}, or at least co-existent. In this way, thanks to their pertaining to different metaphysics, there is no longer a contradiction between simplicity and diversity: Spinoza gets to embrace both Eleatic monism and the inescapable diversity of the world.
+	
+	\subsection{Adequate knowledge and objectivity} \label{subsec:AdequateKnowledgeAndObjectivity}
+	
+	One of the reasons for concluding that the attributes have to be real is Spinoza's claim that we have adequate (and thus necessarily true) knowledge of the essence of substance. But if the metaphysics indexed to substance and to the human standpoint, respectively, have different ontologies, and if we can only conceive of the essence of substance within the metaphysics of the human standpoint (i.e. through the attributes), is adequate knowledge of the essence of substance still a possibility?
+	
+	It is, and the argument as to why goes as follows: if the attributes are indeed real, and if the attributes are what we perceive as the essence of substance \simplecite{E1D4}, then we have access to the real essence of substance; our knowledge thereof is consequently adequate. This is not the same as the subjective interpretation, in which reality is restricted to a single metaphysics; on that kind of interpretation, attributes perceived by finite minds that are not grounded solely in the single metaphysics cannot be real, and so must be \enquote{projections} of some kind, thereby constituting a block on adequate knowledge of the essence of substance.
+	
+	But on a standpoint interpretation, neither metaphysics is reducible to the other. In which case, what is real in either is, precisely, \emph{real} \dash and whatever is real in the metaphysics indexed to the human standpoint is just as capable of grounding adequate knowledge as whatever is real in the metaphysics indexed to the substance. Hence, on the standpoint interpretation, the attributes do not constitute a block on adequate knowledge. In other words, our having an adequate idea of the essence of substance as diverse, in terms of attributes, is entirely compatible with there being an adequate idea of the essence of substance as non-diverse in God; each idea is simply grounded within the scope of separate metaphysics.
+	
+	The intuitive, but misleading, way to think of this would be as two perspectives, from two standpoints, on the same thing: from one standpoint, the essence of substance really is unitary and homogeneous; from another, it really is diverse. We might be tempted to think of it as something like a lenticular print (e.g., a billboard that shows a different image depending on which side you're looking at it from) \dash both images are really there, but neither is reducible to the other.\footnote{Spinoza gives a somewhat similar example as an explanation of the identity between substance and attributes, in Letter 9, to De Vries, where he notes that a (microscopically) flat surface is called \enquote{white} from the perspective of human sight \autocite[195--196]{C1}.} Visualising the metametaphysical pluralism of the standpoint interpretation like this, however, would be misleading principally because it implies a notion of objectivity that is not available in the context of the essence of Spinozistic substance.
+		
+	The problem here is that talking of \enquote{the same thing} suggests that there is some thing in itself that is independent of the perspective on it. In the lenticular print example, the restricted perspective of each standpoint gives it access to only one image, but the print in itself is a three-dimensional structure consisting of alternating, interlaced strips of each image at alternating angles. So, in this case, the images indexed to each standpoint are grounded in the ontology of the print itself, and each perspective can, one might presume, be collapsed into that ontology. In other words, the visualisation suggests a single \enquote{metaphysics} rather than two.
+	
+	Now, there are relevant questions to be raised even within the confines of this analogy \dash e.g., considered in the complete absence of any perspective, can the print in itself really be said to contain either determinate image? We could say that the print in itself is such that, if it were viewed from a certain perspective, a particular image would be seen \dash but this requires reintroducing perspectives, even if only hypothetically; in which case, we are no longer considering the print in itself. There is an argument to be made for each image's being an entirely real \enquote{aspect}/\enquote{quiddity} of the essence of the print (or \enquote{way} of perceiving it) that is completely lost when considering the print in itself \dash i.e., that there exist distinct ontologies with respect to the print, with no one being collapsable into any other.
+	
+	This is not quite the argumentative tack I want to take here, however. Examples, analogies, etc.\ will tend to be misleading in this context because our practices of talking, and thinking, about how the world is are built on the presumption of metametaphysical monism \dash when we talk of different perspectives on the same thing, the supposed objectivity of that thing is implicit in the practice. Since metametaphysical monism is what's in question here, analogies will be poor guides. Furthermore, Spinoza is explicit that images \dash such as my lenticular print example \dash cannot provide adequate knowledge \simplecite{e.g., E2P26c}.\footnote{They cannot because imagistic ideas are necessarily confused \simplecite{E2P35}, involving, minimally, the confusion of the idea of some external thing with that of (part of) one's own body \simplecite{E2P16}. We might say that the print example, and images of that ilk, are also confused with notions of objectivity.} To understand the metaphysics of the attributes, then, the necessity of the reality of both their distinction and their non-distinction supersedes any imagistic analogy.
+	
+	In this way, the motivation for proposing metametaphysical pluralism comes from a Spinozistic rationalism: as shown above, within Spinoza's system, the essence of substance as diverse has to be real, and the essence of substance as non-diverse also has to be real. In just this way, we have two incompatible realities, both of which must hold. If both realities must hold then there is no single reality into which they can be collapsed \dash just because, if there were, they would not both hold. It is in just this sense that Spinoza ends up requiring metametaphysical pluralism. Accordingly, speaking analogously again, we might say that there is no such thing as the print in itself that subsumes the perspectives on it. Or, perhaps better, the perspective of substance on itself cannot exhaust, and cannot have primacy over, (at least some) other perspectives on it.
+	
+	It is also in this sense that distinct attributes get to be (partially) grounded in the substance while the essence of substance as simple is \emph{also} grounded in the substance. It is just that the former is grounded in the substance as indexed to the human standpoint and the latter as indexed to the substance. As such, Spinoza's real distinction between the attributes no longer needs to be reconceptualised as some other kind of distinction. On the standpoint reading, we can take him at his word: as indexed to the human standpoint, thought is really distinct from extension. This presents no contradiction once we allow for metametaphysical pluralism.
+	
+%	And this is what allows us to address \ref{itm:completeness}. In the print analogy, the two perspectives are equally limited (one from one side, one from the other). When it comes to the essence of substance, though, the human standpoint is limited, while the standpoint of substance is complete. In this respect, the metaphysics indexed to substance might look more analogous to the print in itself than to a perspective on it.
+	
+%	On a metametaphysical monist interpretation, 
+%	\begin{enumerate*}[(a) ]
+%		\item \label{itm:thereIsObjSubstance} there is an objective substance (the print in itself)
+%		\item and the attributes must be grounded in it.
+%	\end{enumerate*}
+%	On a metametaphysical pluralist reading, there are separate metaphysics indexed to the substance and to the human standpoint,	each of which grounds a different adequate idea of the essence of substance. At first glance, it might look as though the metaphysics indexed to the substance is taking the place of \ref{itm:thereIsObjSubstance}
+	
+	%% Quasi-angel argument. (Would be angels on Melamed’s representational parallelism, quasi-angels on inter-attribute parallelism.)
+	
+%%
+
+	\subsection{Objections} \label{sec:Obj}
+	
+	This all leads to what might seem to be a strange and unattractive conclusion. In the following subsections, I address a few concerns, with a view to showing that the metametaphysical pluralism that Spinoza seems to have ended up in is is more plausible and more powerful than it might at first appear.
+	
+%%	
+	
+	\subsubsection{Is this what Spinoza is really getting at?} \label{subsec:Blended}
+	
+	All of this might be compelling, but you might well wonder whether this can really be Spinoza's view. For one thing, if he were indeed proposing two metaphysics, why would he not have said as much? Why would the great rationalist have been so non-transparent about such a fundamental part of his system? On the standpoint interpretation, what Spinoza is doing in the \texttitle{Ethics} (and to varying degrees in the TEI, CM, and correspondence) is to present a \enquote{blended view}: he is presenting a single system that surreptitiously blends together two separate metaphysics. As I have argued throughout this paper, either side by itself falls apart, and both are needed to make a complete picture of the world. Spinoza's blended view is intended to be that complete picture, but it is nonetheless a combination of two separate metaphysics.
+	
+	Now, this blended view can play out in a few ways. Either
+	\setlist{itemjoin={,\enspace}, itemjoin* = {, or\enspace}}
+	\begin{enumerate*}[(a) ]
+		\item \label{itm:Underestimated} Spinoza is aware that he's giving a blended view, but has underestimated the metametaphysical implications
+		\item \label{itm:Underplaying} Spinoza is aware that he's giving a blended view, but is underplaying the metametaphysical implications
+		\item \label{itm:Unaware} Spinoza isn't aware that he's giving a blended view, but analysis can show the underlying commitments
+	\end{enumerate*}.
+	\setlist{itemjoin={,\enspace}, itemjoin* = { and\enspace}}
+	
+	At least to the extent that thought and extension are introduced axiomatically, and not derived from the the metaphysics of substance, Spinoza is presumably aware that what he is presenting is a blended view. It could be that he does not make the further step of realising that this seems to commit him to a metametaphysical pluralism. Or it could be that he does realise as much but avoids making it explicit, possibly so as not to introduce its nonintuitive consequences. Alternatively, Spinoza himself might not have taken any of these steps and simply introduced thought and extension in order to get his system to work, while assuming that they must somehow pertain to the single metaphysics of substance. This, after all, is a standard assumption in the literature as well.
+	
+	My position here is agnostic as to whether \ref{itm:Underestimated}, \ref{itm:Underplaying}, or \ref{itm:Unaware} holds. In all cases, there are evidently elements that the substance metaphysics Spinoza sets out in Part One of the \texttitle{Ethics} can't provide him. What he is certainly aware of is that he has to add thought and extension. The standpoint interpretation is the analysis of what happens when he does.
+	
+%%	
+	
+	\subsubsection{Does this undermine Spinoza’s monism?} \label{subsec:Monism}
+	
+	The standpoint interpretation is meant to reconcile a radical monism with the diversity of the world Spinoza presents. But it does so by proposing a kind of pluralism \dash doesn't this undermine the monism it was supposed to be defending in the first place? It does not, because the proposed pluralism is a second-order pluralism: to maintain metametaphysical pluralism is to allow for a plurality of metaphyics, but that places no restriction on how many entities each first-order metaphysics upholds. Maintaining a metaphysical monism is thus entirely compatible with metametaphysical pluralism. Moreover, as set out above, Spinoza's metaphysical monism is not just compatible with metametaphysical pluralism but requires it, since his substance metaphysics can be neither established nor maintained without the metaphysics indexed to the human standpoint. As such, far from undermining Spinoza's metaphysical monism, metametaphysical pluralism is its guarantor.
+
+%%
+	
+	\subsubsection{Trans-attributionality} \label{subsec:TransAttributionality}
+	
+	One of the arguments against the subjective interpretation is that it makes the ontological essence of substance trans-attributional, thereby preventing our having adequate knowledge of it.\footnote{\Textcite[511--512]{Shein2009} argues that the objective interpretation also suffers from a trans-attributional problem of its own.} Since the standpoint interpretation takes the essence of substance to be simple within the metaphysics indexed to the substance and diverse only within the metaphysics indexed to the human standpoint, it might seem as though the trans-attributional problem applies here too. It would if the metaphysics indexed to the substance were objective, but it is not (as covered in \autoref{subsec:AdequateKnowledgeAndObjectivity}).
+	
+	On the standpoint interpretation, then, the essence of substance is equally real whether it is indexed to substance or to the human standpoint. Because we are dealing with two ineliminable and mutually irreducible metaphysics, neither has primacy over the other. Consequently, neither essence has primacy over the other. The diverse essence of substance as indexed to the human standpoint really is the essence of substance \dash and there can be nothing trans-attributional involved, because there is nothing beyond the attributes within this metaphysics. The simple essence of substance also really is the essence of substance, but it and the diverse essence are entirely separate, since they pertain to entirely different metaphysics, isolated by their indices.
+	
+	%% No, because in HS, there is nothing beyond attributes; in SS, there are no attributes.
+	
+%	\subsubsection{Objection: infinite number of attributes} \label{subsec:NoAttr}
+	
+%	If the metaphysics of the human standpoint only grounds two attributes, and the metaphysics of substance can ground none, how can Spinoza claim that there is a infinite number of attributes? Two options. (1) Use the Bennett position. (2) Better: the metaphysics of substance implies an infinite number of attributes; it just can’t ground them.
+	
+%	\subsubsection{Objection: arbitrariness} \label{subsec:Arbitrariness} \todo{I.e., does this mean that anything goes? Can maybe do without this?}
+	
+	
+	\section{To what extent is this a defence of metametaphysical pluralism?} \label{sec:Defence}
+	
+	This paper gives a hypothetical argument in favour of metametaphysical pluralism: if Spinoza's metaphysical monism is to hold, it requires metametaphysical pluralism. You could always reject the first premise and maintain that Spinoza's metaphysical monism simply does not hold, thereby rejecting the conclusion. You might even want to argue that Spinoza's metaphysical monism does not hold precisely because it requires metametaphysical pluralism. So, to the extent that this paper constitutes a defence of metametaphysical pluralism, it is not one without caveats. It does not show that metametaphysical pluralism must hold. But it does show that it is a position  that is at least plausible and consistent, and that has utility and explanatory potential \dash it's a position that can make sense of what might otherwise seem inexplicable.	
+	
+%	\section{Digression: why standpoints?} \label{sec:WhyS} \todo{Probably get rid of this?}
+	
+%	My linking this reading to standpoint theory is a two-way thing. For one part, the political analysis involved is, I think, relevant to and illuminating of work in metaphysics in general, and \dash especially \dash Spinoza’s metaphysics in particular. Spinoza’s treatment of ontology is not independent of politics, insofar as it is not independent of power relations: Spinoza’s God is omnipotent in the most fundamental sense \dash or, rather, is ultimately the only source of power \dash while finite humans are, in principle, fully subject to external determination. And yet, to whatever extent the analysis given here works, the in-principle metaphysically and epistemically weaker human standpoint has access to ontology and knowledge that God does not. And it has this access thanks to its limitations \dash thanks to its finitude, to its, ultimately, being a true standpoint. Standpoint theory’s identification of the epistemic disadvantages of the powerful position is not irrelevant here.
+	
+%	For the other part, I hope that developing a standpoint metaphysics might, in turn, be of some use to standpoint theory itself. In addition to which, a historical (or, at least, quasi-historical) grounding for the position might also be of some benefit. …
+	
+	\section{Conclusion} \label{sec:Conclusion}
+	
+	Spinoza's rationalism commits him to maintaining that the essence of substance is simple and non-diverse. But it also commits him to maintaining that the essence of substance is diverse, insofar as the attributes are required to be real. The literature has attempted to overcome this contradiction by reconceptualising what Spinoza explicitly describes as a real distinction between the attributes, taking it to be either a rational distinction of one sort or another or an intermediate distinction. On this understanding, the attributes become ways of regarding the substance, or \enquote{minimally real} aspects or quiddities of the substance.
+	
+	All of this, however, is in need of metaphysical specification. It is not enough to appeal to different distinctions, or to ways, aspects, or quiddities, without showing what this entails. The standpoint interpretation presented here is an explication of the implications of these approaches. And what they imply is that Spinoza has two concurrent, ineliminable, and mutually irreducible metaphysics, one in which the essence of substance is diverse, and one in which it is non-diverse.
+	
+	The argument in brief is as follows. Because Spinoza's metaphysical commitments necessitate that the essence of substance be simple, a diverse essence cannot be grounded in the same metaphysics, on pain of contradiction. Consequently, Spinoza cannot derive thought and extension from the metaphysics set out in Part One of the \texttitle{Ethics}; instead, he introduces them axiomatically and a posteriori, as derived from human experience. I analyse this as implying a separate metaphysics, one indexed to a human standpoint. When understood as pertaining to two separate metaphysics, the diversity and non-diversity of substance are no longer in contradiction. This metametaphysical pluralism allows the attributes to really be diverse and the substance to really be simple \dash and it thereby allows Spinoza to establish and maintain his metaphysical monism.
+	
+	\printshorthands
+	\printbibliography[check=shorthands]
+\end{document}
